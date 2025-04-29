@@ -37,3 +37,22 @@ Predicts minimum free energy (MFE) for the rna -> rna complex interaction.
 
 ## [similarity](https://github.com/GenerativeMolMachines/BindingVsEnergyPredictionModels/tree/main/similarity)
 Calculates small molecule similarity by Tanimoto algorithm and protein/DNA/RNA sequence similarity as a percentage of match by pairwise alignment of two sequences.
+
+## Deployment
+First go for set_up_env.py where it exists.
+```
+python3 set_up_env.py
+```
+
+If it creates .env file, use this command to start docker:
+```
+docker compose -f docker-compose.yaml --env-file .env up -d --build
+```
+Else:
+```
+docker compose -f docker-compose.yaml up -d --build
+```
+Then build it:
+```
+docker build . -t [container name]:latest
+```
