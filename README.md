@@ -11,7 +11,7 @@ Predicts the binding fact (True/False) for the antibody -> antigen complex.
  - Sourse code
 
 ## [aptamer_protein](https://github.com/GenerativeMolMachines/BindingVsEnergyPredictionModels/tree/main/aptamer_protein)
-Predicts the binding fact (True/False) for the aptamer -> protein complex.
+Predicts affinity for the aptamer -> protein complex interaction.
  - Source article
  - Sourse code
 
@@ -31,11 +31,11 @@ Predicts the binding fact (True/False) for the protein -> protein complex.
  - Sourse code
 
 ## [rna_rna](https://github.com/GenerativeMolMachines/BindingVsEnergyPredictionModels/tree/main/rna_rna)
-Predicts the binding fact (True/False) for the rna -> rna complex.
+Predicts minimum free energy (MFE) for the rna -> rna complex interaction.
  - Source article
  - Sourse code
 
 ## [similarity](https://github.com/GenerativeMolMachines/BindingVsEnergyPredictionModels/tree/main/similarity)
-
+Calculates small molecule similarity by Tanimoto algorithm and protein/DNA/RNA sequence similarity as a percentage of match by pairwise alignment of two sequences.
  - Source article
  - Sourse code
