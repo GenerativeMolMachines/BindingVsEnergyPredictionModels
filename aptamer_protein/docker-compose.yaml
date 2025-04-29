@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+    restart: always
+    container_name: apt_prot_model
+    command: uvicorn main:app

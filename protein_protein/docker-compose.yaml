@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+    restart: always
+    env_file:
+      - .env
+    container_name: protein_protein_cont
+    command: uvicorn main:app
