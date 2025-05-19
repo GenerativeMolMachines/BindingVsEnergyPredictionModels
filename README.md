@@ -12,6 +12,10 @@ Predicts the binding fact (True/False) for the antibody -> antigen complex.
 
 ## [aptamer_protein](https://github.com/GenerativeMolMachines/BindingVsEnergyPredictionModels/tree/main/aptamer_protein)
 Predicts affinity for the aptamer -> protein complex interaction.
+
+PyBioMed was used to calculate descriptors.
+XGBoost was used for prediction.
+
  - [Source article](https://pubs.acs.org/doi/10.1021/acs.jcim.3c00713)
  - [Sourse code](https://github.com/Meaw0415/APIPred)
 
@@ -22,11 +26,14 @@ Predicts the binding fact (True/False) for the aptamer -> small molecule complex
 
 ## [nanobody_antigen](https://github.com/GenerativeMolMachines/BindingVsEnergyPredictionModels/tree/main/nanobody_antigen)
 Predicts the binding fact (True/False) for the nanobody -> antigen complex.
- - [Source article](https://link.springer.com/article/10.1186/s12859-024-05750-5)
- - [Sourse code](https://github.com/WangLabforComputationalBiology/NanoBERTa-ASP)
+ - [Source article](https://link.springer.com/chapter/10.1007/978-981-99-7074-2_18)
+ - [Sourse code](https://github.com/sarwanpasha/Nanobody_Antigen)
 
 ## [protein_protein](https://github.com/GenerativeMolMachines/BindingVsEnergyPredictionModels/tree/main/protein_protein)
 Predicts the binding fact (True/False) for the protein -> protein complex.
+
+The model used is a Transformer-based uncertainty-aware model (TUnA) for PPI prediction. TUnA uses ESM-2 embeddings with Transformer encoders and incorporates a Spectral-normalized Neural Gaussian Process.
+
  - [Source article](https://academic.oup.com/bib/article/25/5/bbae359/7720609)
  - [Sourse code](https://github.com/Wang-lab-UCSD/TUnA/tree/main)
 
