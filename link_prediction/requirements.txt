@@ -161,6 +161,4 @@ uvicorn==0.30.6
 fastapi==0.112.0
 fastapi-cli==0.0.5
 flatbuffers==24.3.25
-rdkit==2023.9.6
-rdkit-pypi==2022.9.5
 slowapi==0.1.9
