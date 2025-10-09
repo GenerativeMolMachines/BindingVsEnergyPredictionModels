@@ -16,6 +16,7 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 @app.post("/link_prediction")
 @limiter.limit("121/minute")
 async def aptamer_prot_binding(
+        request: Request,
         target_id: str
 ):
     if len(target_id) < 1:
