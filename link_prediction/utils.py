@@ -2,6 +2,8 @@ from fastapi import HTTPException
 import joblib
 import warnings
 import numpy as np
+import json, h5py, torch
+from torchbiggraph.model import DotComparator, CosComparator, L2Comparator, SquaredL2Comparator
 from config import ENTITY_JSON, EMB_H5, MODEL_H5, DIM
 
 warnings.filterwarnings("ignore")

@@ -1,6 +1,5 @@
-import json, h5py, torch
-from torchbiggraph.model import DotComparator, CosComparator, L2Comparator, SquaredL2Comparator
-from utils import load_linear_w_from_h5, load_entity_map, get_comparator
+import torch
+from utils import load_linear_w_from_h5, load_entity_map, get_comparator, load_all_emb
 from config import TOPK, DIM, COMPARATOR_TYPE
 
 INTERNAL_TO_DBID_MAP = load_entity_map()
@@ -26,5 +25,5 @@ def predict(dbid: str):
     scores = pos_scores.view(-1)
     scores[target_id] = float("-inf")
     _, idx = torch.topk(scores, k=min(TOPK, scores.numel()))
-    result = [entity_names[i] for i in idx.tolist()]
+    result = [INTERNAL_TO_DBID_MAP[i] for i in idx.tolist()]
     return result
