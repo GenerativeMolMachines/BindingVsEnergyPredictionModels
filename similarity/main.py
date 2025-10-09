@@ -3,6 +3,7 @@ from starlette.requests import Request
 
 from service import (
     calculate_tanimoto_similarity_smiles,
+    calculate_tanimoto_coefficient,
     calculate_alignment_similarity
 )
 from slowapi import Limiter, _rate_limit_exceeded_handler
@@ -14,6 +15,17 @@ limiter = Limiter(key_func=get_remote_address)
 app = FastAPI()
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+
+# @app.post("/tanimot_sequence")
+# @limiter.limit("121/minute")
+# async def mfe_rna_rna(
+#         request: Request,
+#         sequences_1: str = Query(default=""),
+#         sequences_2: str = Query(default="")
+# ):
+#
+#     return calculate_tanimoto_coefficient(sequences_1, sequences_2)
 
 
 @app.post("/tanimot_smiles")

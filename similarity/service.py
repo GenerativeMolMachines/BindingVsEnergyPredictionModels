@@ -4,6 +4,45 @@ from rdkit.DataStructs import TanimotoSimilarity
 from rdkit.Chem import AllChem
 
 
+def calculate_tanimoto_coefficient(molecule1_sequence, molecule2_sequence, kmer_size=3):
+    """
+    Рассчитывает коэффициент Танимото (Jaccard index) для двух молекул
+    на основе их последовательностей.  Использует k-меры.
+
+    Args:
+        molecule1_sequence (str): Последовательность первой молекулы (например, ДНК, РНК, белок).
+        molecule2_sequence (str): Последовательность второй молекулы.
+        kmer_size (int): Размер k-мера (подстроки).  Значение по умолчанию: 3.
+
+    Returns:
+        float: Коэффициент Танимото, значение между 0 и 1.  Возвращает 0, если одна или обе последовательности пустые.
+    """
+
+    if not molecule1_sequence or not molecule2_sequence:
+        return 0.0  # Обработка пустых последовательностей
+
+    def get_kmers(sequence, k):
+        """
+        Извлекает все k-меры из последовательности.
+        """
+        kmers = set()
+        for i in range(len(sequence) - k + 1):
+            kmers.add(sequence[i:i + k])
+        return kmers
+
+    kmers1 = get_kmers(molecule1_sequence, kmer_size)
+    kmers2 = get_kmers(molecule2_sequence, kmer_size)
+
+    intersection = len(kmers1.intersection(kmers2))
+    union = len(kmers1.union(kmers2))
+
+    if union == 0:
+        return 0.0  # Обработка случая, когда обе последовательности не содержат kmers (например, если k > длина последовательности)
+
+    tanimoto_coefficient = float(intersection) / union
+    return tanimoto_coefficient
+
+
 def calculate_alignment_similarity(sequence1, sequence2, alignment_type="global", match_score=2, mismatch_penalty=-1, gap_penalty=-0.5, extension_penalty=-0.1):
     """
     Рассчитывает процент совпадения по попарному выравниванию двух последовательностей (ДНК или белок).
