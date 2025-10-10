@@ -10,7 +10,7 @@ services:
     ports:
       - "4407:4407"
     networks:
-      - seq_backend
+      - shared_graph_network
 
 networks:
   shared_graph_network:
