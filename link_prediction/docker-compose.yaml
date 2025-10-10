@@ -13,4 +13,5 @@ services:
       - seq_backend
 
 networks:
-  seq_backend:
+  shared_graph_network:
+    external: true
