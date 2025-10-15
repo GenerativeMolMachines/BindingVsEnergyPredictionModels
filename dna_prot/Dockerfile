@@ -14,6 +14,10 @@ RUN curl -sLo miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest
 
 ENV PATH=$CONDA_DIR/bin:$PATH
 
+# Принимаем Terms of Service для каналов Anaconda
+RUN conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main && \
+    conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
+
 # Установка mamba
 RUN conda install -n base -c conda-forge mamba -y
 
