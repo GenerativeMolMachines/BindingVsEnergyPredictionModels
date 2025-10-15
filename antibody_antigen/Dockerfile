@@ -10,5 +10,7 @@ RUN pip3 install --upgrade pip
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt
 
-COPY . .
+COPY set_up.py .
 RUN python3 /antibody_antigen_model/set_up.py
+
+COPY . .
