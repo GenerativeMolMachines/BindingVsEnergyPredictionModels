@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, HTTPException
 from starlette.requests import Request
 
 from results.xspecies.TUnA_seed47.pipeline import main
