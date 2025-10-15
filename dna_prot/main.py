@@ -39,6 +39,8 @@ async def mfe_rna_rna(
         raise HTTPException(status_code=429, detail=error_text)
 
     for seq_pair in seq_pair_list:
+        if seq_pair == "":
+            continue
         ss = seq_pair.split(">")
         protein_sequences = ss[0]
         dna_sequences = ss[1]

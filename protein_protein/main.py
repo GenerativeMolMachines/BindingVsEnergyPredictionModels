@@ -27,6 +27,8 @@ async def protein_protein_binding(
         raise HTTPException(status_code=429, detail=error_text)
 
     for seq_pair in seq_pair_list:
+        if seq_pair == "":
+            continue
         ss = seq_pair.split(">")
         try:
             ans = main(ss[0], ss[1])

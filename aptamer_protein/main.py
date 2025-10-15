@@ -27,6 +27,8 @@ async def aptamer_prot_binding(
         raise HTTPException(status_code=429, detail=error_text)
 
     for seq_pair in seq_pair_list:
+        if seq_pair == "":
+            continue
         ss = seq_pair.split(">")
         apt_sequences = ss[0]
         prot_sequences = ss[1]
