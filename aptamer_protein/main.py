@@ -19,8 +19,7 @@ async def aptamer_prot_binding(
         request: Request,
         sequences: str
 ):
-    # res = {}
-    res = []
+    res = {}
     seq_pair_list = sequences.split(";")
 
     if len(seq_pair_list) > 502:
@@ -28,13 +27,14 @@ async def aptamer_prot_binding(
         raise HTTPException(status_code=429, detail=error_text)
 
     for seq_pair in seq_pair_list:
-        ss = seq_pair.split(":")
+        ss = seq_pair.split(">")
+        apt_sequences = ss[0]
+        prot_sequences = ss[1]
         try:
             # predict(apt_sequences, prot_sequences)
-            ans = predict(ss[0], ss[1])
+            ans = predict(apt_sequences, prot_sequences)
         except:
             ans = None
-        # res[ss] = ans
-        res.append(ans)
+        res[seq_pair] = ans
 
     return {"result": res}

@@ -10,7 +10,7 @@ torch.cuda.nvtx.range_pop = lambda *args, **kwargs: None
 def nvtx_range(*args, **kwargs):
     yield
 
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, HTTPException
 from starlette.requests import Request
 
 from network.predict_dna_protein import predictorBase
@@ -29,11 +29,25 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 @limiter.limit("121/minute")
 async def mfe_rna_rna(
         request: Request,
-        protein_sequences: str = Query(default=""),
-        dna_sequences: str = Query(default="")
+        protein_dna: str = Query(default=""),
 ):
-    label, avg_lddt, interface_pae = predictorBase.predict(
-            protein_seq=protein_sequences,
-            dna_seq=dna_sequences,
-        )
-    return label
+    res = {}
+    seq_pair_list = protein_dna.split(";")
+
+    if len(seq_pair_list) > 502:
+        error_text = "The number of sequences in the query exceeds 500"
+        raise HTTPException(status_code=429, detail=error_text)
+
+    for seq_pair in seq_pair_list:
+        ss = seq_pair.split(">")
+        protein_sequences = ss[0]
+        dna_sequences = ss[1]
+        try:
+            ans, avg_lddt, interface_pae = predictorBase.predict(
+                protein_seq=protein_sequences,
+                dna_seq=dna_sequences,
+            )
+        except:
+            ans = None
+        res[seq_pair] = ans
+    return {"result": res}

@@ -10,7 +10,7 @@ from utils import (
 
 clf_fs, poly, best_model, config, features_list = load_model()
 
-def predict(apt: str, prot: str) -> bool:
+def predict(apt: str, prot: str) -> int:
     apt_tr = calculate_kmers(apt)
 
     prot_tr = extractPAAC(prot, lambda_val=min(len(prot) - 1, 30))
@@ -46,6 +46,6 @@ def predict(apt: str, prot: str) -> bool:
     X_poly = poly.transform(X_selected)
     ans = best_model.predict(X_poly).item()
     if ans > 0.9:
-        return True
+        return 1
     else:
-        return False
+        return 0

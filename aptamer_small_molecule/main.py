@@ -17,26 +17,24 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 @limiter.limit("121/minute")
 async def aptamer_mol_binding(
         request: Request,
-        rna_sequences: str,
-        mol_smiles: str
+        rna_mol_smiles: str
 ):
-    # # res = {}
-    # res = []
-    # seq_pair_list = sequences.split(";")
-    #
-    # if len(seq_pair_list) > 502:
-    #     error_text = "The number of sequences in the query exceeds 500"
-    #     raise HTTPException(status_code=429, detail=error_text)
-    #
-    # for seq_pair in seq_pair_list:
-    #     ss = seq_pair.split(":")
-    #     try:
-    #         # predict(rna_sequences, mol_smiles)
-    #         ans = predict(ss[0], ss[1])
-    #     except:
-    #         ans = None
-    #     # res[ss] = ans
-    #     res.append(ans)
-    #
-    # return {"result": res}
-    return predict(rna_sequences, mol_smiles)
+    res = {}
+    seq_pair_list = rna_mol_smiles.split(";")
+
+    if len(seq_pair_list) > 502:
+        error_text = "The number of sequences in the query exceeds 500"
+        raise HTTPException(status_code=429, detail=error_text)
+
+    for seq_pair in seq_pair_list:
+        ss = seq_pair.split(">")
+        rna_sequences = ss[0]
+        mol_smiles = ss[1]
+        try:
+            # predict(rna_sequences, mol_smiles)
+            ans = predict(rna_sequences, mol_smiles)
+        except:
+            ans = None
+        res[seq_pair] = ans
+
+    return {"result": res}

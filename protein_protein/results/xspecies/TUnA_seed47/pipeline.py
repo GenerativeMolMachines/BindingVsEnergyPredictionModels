@@ -98,10 +98,7 @@ def main(sequence_a, sequence_b):
     # Вывод результата
     # print("Predicted Interaction Label:", Y[0])  # Предсказанная метка (0 или 1)
     # print("Predicted Interaction Score:", S[0])  # Вероятность взаимодействия (от 0 до 1)
-    if Y[0] == 1:
-        return True
-    else:
-        return False
+    return Y[0]
 
 
 # Execute the main function when the script is run

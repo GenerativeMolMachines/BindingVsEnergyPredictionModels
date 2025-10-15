@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, HTTPException
 from starlette.requests import Request
 
 from service import predict
@@ -17,8 +17,22 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 @limiter.limit("121/minute")
 async def mfe_rna_rna(
         request: Request,
-        rna1_sequences: str = Query(default=""),
-        rna2_sequences: str = Query(default="")
+        rna1_rna2: str = Query(default="")
 ):
+    res = {}
+    seq_pair_list = rna1_rna2.split(";")
 
-    return predict(rna1_sequences, rna2_sequences)
+    if len(seq_pair_list) > 502:
+        error_text = "The number of sequences in the query exceeds 500"
+        raise HTTPException(status_code=429, detail=error_text)
+
+    for seq_pair in seq_pair_list:
+        ss = seq_pair.split(">")
+        rna1_sequences = ss[0]
+        rna2_sequences = ss[1]
+        try:
+            ans = predict(rna1_sequences, rna2_sequences)
+        except:
+            ans = None
+        res[seq_pair] = ans
+    return {"result": res}
