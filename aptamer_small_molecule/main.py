@@ -34,8 +34,7 @@ async def aptamer_mol_binding(
         mol_smiles = ss[1]
         try:
             # predict(rna_sequences, mol_smiles)
-            ans = predict(rna_sequences, mol_smiles)
-            print(ans)
+            ans = int(predict(rna_sequences, mol_smiles))
         except:
             ans = None
         res[seq_pair] = ans
