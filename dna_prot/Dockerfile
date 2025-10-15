@@ -25,7 +25,7 @@ RUN conda install -n base -c conda-forge mamba -y
 COPY RF2na-linux.yml /app/RF2na-linux.yml
 
 # Создаём окружение
-RUN mamba env create -f /app/RF2na-linux.yml
+RUN mamba env create -f /app/RF2na-linux.yml -y
 
 # Копируем проект в контейнер
 COPY . /app
