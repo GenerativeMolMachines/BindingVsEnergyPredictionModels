@@ -20,12 +20,14 @@ async def predict_affinity_LH(
 ):
     res = {}
     seq_pair_list = anitibody_antigen.split(";")
-
+    print(len(seq_pair_list))
     if len(seq_pair_list) > 502:
         error_text = "The number of sequences in the query exceeds 500"
         raise HTTPException(status_code=429, detail=error_text)
 
     for seq_pair in seq_pair_list:
+        if seq_pair == "":
+            continue
         ss = seq_pair.split(">")
         anitibody = ss[0]
         antigen = ss[1]
