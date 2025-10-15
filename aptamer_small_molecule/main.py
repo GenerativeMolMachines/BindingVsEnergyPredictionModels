@@ -35,6 +35,7 @@ async def aptamer_mol_binding(
         try:
             # predict(rna_sequences, mol_smiles)
             ans = predict(rna_sequences, mol_smiles)
+            print(ans)
         except:
             ans = None
         res[seq_pair] = ans
