@@ -12,7 +12,10 @@ def predict(dbid: str):
     target_id = INTERNAL_TO_DBID_MAP.index(dbid)
     target_embedding = EMBEDDINGS_MAP[target_id]
     N = EMBEDDINGS_MAP.size(0)
-    rhs_proj = EMBEDDINGS_MAP @ W.T
+    if W.dim() == 1:
+        rhs_proj = EMBEDDINGS_MAP * W.unsqueeze(0)  # [N, D] * [1, D] = [N, D]
+    else:
+        rhs_proj = EMBEDDINGS_MAP @ W.T
 
     lhs_prepared = COMPARATOR.prepare(target_embedding.view(1, 1, DIM)).expand(1, N, DIM)
     rhs_prepared = COMPARATOR.prepare(rhs_proj.view(1, N, DIM))
