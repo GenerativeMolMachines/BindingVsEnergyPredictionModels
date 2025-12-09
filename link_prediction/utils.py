@@ -3,7 +3,7 @@ import warnings
 from pathlib import Path
 import json, h5py, torch, s3fs, io
 from torchbiggraph.model import DotComparator, CosComparator, L2Comparator, SquaredL2Comparator
-from config import ENTITY_JSON, EMB_H5, MODEL_H5, DIM, ACCESS_KEY, SECRET_KEY, MINIO_ENDPOINT, CACHE_DIR
+from config import ENTITY_JSON, EMB_H5, MODEL_H5, DIM, ACCESS_KEY, SECRET_KEY, MINIO_ENDPOINT, CACHE_DIR, RELATION_IDX
 
 warnings.filterwarnings("ignore")
 
@@ -117,27 +117,45 @@ def get_comparator(name: str):
     }[name]
 
 def load_linear_w_from_h5() -> torch.Tensor:
-    candidates = [
-        "model/relations/0/operator/rhs/weight",
-        "model/relations/0/operator/weight",
-        "model/relations/0/operator/matrix",
-        "model/relations/0/weight",
-        "model/operator/weight",
-    ]
-    with h5py.File(MODEL_H5, "r") as hf:
+    fs = get_s3_fs()
+    diagonal_path = f"model/relations/{RELATION_IDX}/operator/rhs/diagonal"
+    with fs.open(DIM, 'rb') as f:
+        file_content = f.read()
+    # Создаем in-memory файловый объект для h5py
+    file_obj = io.BytesIO(file_content)
+
+    with h5py.File(file_obj, "r") as hf:
+        if diagonal_path in hf:
+            diagonal = torch.from_numpy(hf[diagonal_path][...]).float()
+            if diagonal.shape == (DIM,):
+                return diagonal  # Возвращаем как вектор для diagonal оператора
+
+        # Если не diagonal, пробуем linear оператор (матрица [D, D])
+        candidates = [
+            f"model/relations/{RELATION_IDX}/operator/rhs/weight",
+            f"model/relations/{RELATION_IDX}/operator/weight",
+            f"model/relations/{RELATION_IDX}/operator/matrix",
+            f"model/relations/{RELATION_IDX}/weight",
+            "model/operator/weight",
+        ]
         for key in candidates:
             if key in hf:
                 W = torch.from_numpy(hf[key][...]).float()
                 if tuple(W.shape) == (DIM, DIM):
                     return W
-        # fallback: ищем любой [dim,dim] с 'operator'
+
+        # ищем любой [DIM,DIM] с operator
         target = None
+
         def visit(name, obj):
             nonlocal target
             if target is None and isinstance(obj, h5py.Dataset):
                 if obj.shape == (DIM, DIM) and "operator" in name.lower():
                     target = torch.from_numpy(obj[...]).float()
+
         hf.visititems(visit)
         if target is not None:
             return target
-    raise RuntimeError("Не найден матриц W_r в H5")
+
+    raise RuntimeError(f"Не найден оператор в H5 (RELATION_IDX={RELATION_IDX})")
+

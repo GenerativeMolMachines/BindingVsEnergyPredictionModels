@@ -14,3 +14,4 @@ DIM = 400
 TOPK = 100
 COMPARATOR_TYPE = "cos"
 CACHE_DIR = Path("./data")
+RELATION_IDX = 0
