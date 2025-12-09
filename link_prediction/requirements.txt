@@ -163,3 +163,4 @@ fastapi-cli==0.0.5
 flatbuffers==24.3.25
 slowapi==0.1.9
 joblib
+s3fs
