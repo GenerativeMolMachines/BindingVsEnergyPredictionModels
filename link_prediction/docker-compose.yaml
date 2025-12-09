@@ -8,7 +8,7 @@ services:
     container_name: link_prediction_model
     command: uvicorn main:app --host 0.0.0.0 --port 4407 --workers 2
     env_file:
-      - ./env
+      - ./.env
     ports:
       - "4407:4407"
     networks:
