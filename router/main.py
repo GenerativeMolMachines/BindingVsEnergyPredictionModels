@@ -1,7 +1,9 @@
 from fastapi import FastAPI, Query, HTTPException
 import httpx
 
-app = FastAPI()
+app = FastAPI(
+    root_path="/api"
+)
 
 # Внутренние адреса контейнеров в Docker-сети
 RNA_RNA_URL = "http://rna_viennarna_model:4425/mfe_rna_rna"
