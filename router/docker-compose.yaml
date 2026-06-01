@@ -12,6 +12,9 @@ services:
     networks:
       - rna_network
       - apt_network
+      - apt_mol_network
+      - prot_prot_network
+      - ccp_gen_network
 
 networks:
   rna_network:
@@ -21,3 +24,15 @@ networks:
   apt_network:
     external: true
     name: aptamer_protein_seq_backend
+
+  apt_mol_network:
+    external: true
+    name: aptamer_small_molecule_seq_backend
+
+  prot_prot_network:
+    external: true
+    name: protein_protein_seq_backend
+
+  ccp_gen_network:
+    external: true
+    name: cppgeneration_seq_backend
