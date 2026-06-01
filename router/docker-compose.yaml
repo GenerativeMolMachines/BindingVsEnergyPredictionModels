@@ -10,8 +10,14 @@ services:
     ports:
       - "4396:4396"
     networks:
-      - seq_backend
+      - rna_network
+      - apt_network
 
 networks:
-  seq_backend:
+  rna_network:
     external: true
+    name: rna_rna_seq_backend
+
+  apt_network:
+    external: true
+    name: aptamer_protein_seq_backend
