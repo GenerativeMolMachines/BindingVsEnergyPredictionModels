@@ -12,7 +12,7 @@ APT_PROT_URL = "http://apt_prot_model:4426/aptamer_prot_binding"
 
 @app.post("/mfe_rna_rna")
 async def mfe_rna_rna(
-    rna1_rna2: str = Query(default="")
+    rna1_rna2: str = Query(default="СС>CC;")
 ):
     try:
         async with httpx.AsyncClient(timeout=300) as client:
@@ -34,7 +34,7 @@ async def mfe_rna_rna(
 
 @app.post("/aptamer_prot_binding")
 async def aptamer_prot_binding(
-    sequences: str
+    sequences: str = Query(default="СС>AMG;")
 ):
     try:
         async with httpx.AsyncClient(timeout=300) as client:
