@@ -13,8 +13,8 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # Конфигурация внутренних сервисов
 INTERNAL_SERVICES = {
-    "mfe_rna_rna": "http://rna_rna-app:4425/mfe_rna_rna",
-    "aptamer_prot_binding": "http://apt_prot_model:4426/aptamer_prot_binding"
+    "mfe_rna_rna": "http://rna_viennarna_model:4425/mfe_rna_rna",
+    "aptamer_prot_binding": "http://aptamer_protein-app:4426/aptamer_prot_binding"
 }
 
 # Таймаут для запросов
