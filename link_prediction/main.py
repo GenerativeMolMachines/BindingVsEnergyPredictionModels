@@ -1,11 +1,10 @@
 from fastapi import FastAPI, Query, HTTPException
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
 from starlette.requests import Request
 
 from service import predict
-from slowapi import Limiter, _rate_limit_exceeded_handler
-from slowapi.util import get_remote_address
-from slowapi.errors import RateLimitExceeded
-
 
 limiter = Limiter(key_func=get_remote_address)
 app = FastAPI()
@@ -23,6 +22,6 @@ async def link_prediction(
         error_text = "ID is invalid"
         raise HTTPException(status_code=404, detail=error_text)
     try:
-        return  {"result": predict(target_id)}
+        return {"result": predict(target_id)}
     except:
         raise HTTPException(status_code=422)

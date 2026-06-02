@@ -1,8 +1,9 @@
 import os
+
 PROJECT_PATH = os.getcwd()
 ENTITY_JSON = os.path.join(PROJECT_PATH, 'data', 'entity_names_molecules_0.json')
-EMB_H5 = os.path.join(PROJECT_PATH, 'data', 'embeddings_molecules_0.v240.h5')
-MODEL_H5 = os.path.join(PROJECT_PATH, 'data', 'model.v240.h5')
+EMB_H5 = os.path.join(PROJECT_PATH, 'data', 'embeddings_molecules_0.v352.h5')
+MODEL_H5 = os.path.join(PROJECT_PATH, 'data', 'model.v352.h5')
 
 if __name__ == "__main__":
     envs = f'{PROJECT_PATH=}\n' \

@@ -1,10 +1,11 @@
 import torch
-from utils import load_linear_w_from_h5, load_entity_map, get_comparator, load_all_emb
+
 from config import TOPK, DIM, COMPARATOR_TYPE
+from utils import load_translation_from_h5, load_entity_map, get_comparator, load_all_emb
 
 INTERNAL_TO_DBID_MAP = load_entity_map()
 EMBEDDINGS_MAP = load_all_emb()
-W = load_linear_w_from_h5()
+TRANSLATION = load_translation_from_h5()
 COMPARATOR = get_comparator(COMPARATOR_TYPE)
 
 
@@ -12,21 +13,23 @@ def predict(dbid: str):
     target_id = INTERNAL_TO_DBID_MAP.index(dbid)
     target_embedding = EMBEDDINGS_MAP[target_id]
     N = EMBEDDINGS_MAP.size(0)
-    if W.dim() == 1:
-        rhs_proj = EMBEDDINGS_MAP * W.unsqueeze(0)  # [N, D] * [1, D] = [N, D]
-    else:
-        rhs_proj = EMBEDDINGS_MAP @ W.T
+
+    rhs_proj = EMBEDDINGS_MAP + TRANSLATION.unsqueeze(0)
 
     lhs_prepared = COMPARATOR.prepare(target_embedding.view(1, 1, DIM)).expand(1, N, DIM)
     rhs_prepared = COMPARATOR.prepare(rhs_proj.view(1, N, DIM))
+
     pos_scores, _, _ = COMPARATOR(
         lhs_prepared,
         rhs_prepared,
         torch.empty(1, 0, DIM),
         torch.empty(1, 0, DIM),
     )
+
     scores = pos_scores.view(-1)
     scores[target_id] = float("-inf")
+
     _, idx = torch.topk(scores, k=min(TOPK, scores.numel()))
+
     result = [INTERNAL_TO_DBID_MAP[i] for i in idx.tolist()]
     return result
