@@ -1,6 +1,6 @@
 torch>=2.8.0
 h5py>=3.14.0
-torchbiggraph @ git+https://github.com/facebookresearch/PyTorch-BigGraph.git@6fccd3f572f530469fe97ee63669524c686bcc2a
+torchbiggraph
 uvicorn==0.30.6
 fastapi==0.112.0
 fastapi-cli==0.0.5
