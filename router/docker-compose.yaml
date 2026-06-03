@@ -40,4 +40,4 @@ networks:
 
   aptamer_gen_network:
     external: true
-    name: aptamer_gen_model_seq_backend
+    name: aptamer_generation_seq_backend
