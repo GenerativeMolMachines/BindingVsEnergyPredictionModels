@@ -11,12 +11,12 @@ app = FastAPI(
     root_path="/api"
 )
 
-# Внутренние адреса контейнеров в Docker-сети
 RNA_RNA_URL = "http://rna_viennarna_model:4425/mfe_rna_rna"
 APT_PROT_URL = "http://apt_prot_model:4426/aptamer_prot_binding"
 APT_MOL_URL = "http://apt_mol_model:4431/aptamer_mol_binding"
 PROT_PROT_URL = "http://protein_protein_cont:4418/protein_protein_binding"
 PEPTIDE_URL = "http://cpp_gen_model:4397/generate_peptide"
+APTAMER_URL = "http://aptamer_gen_model:4395/generate_aptamer"
 
 
 @app.post("/mfe_rna_rna")
@@ -143,4 +143,28 @@ async def generate_peptide(payload: PeptideRequest):
         raise HTTPException(
             status_code=500,
             detail=f"Peptide service unavailable: {str(e)}"
+        )
+
+
+@app.post("/generate_aptamer")
+async def generate_aptamer():
+    try:
+        async with httpx.AsyncClient(timeout=300) as client:
+            response = await client.post(
+                APTAMER_URL
+            )
+
+        return Response(
+            content=response.content,
+            status_code=response.status_code,
+            media_type=response.headers.get(
+                "content-type",
+                "application/json"
+            ),
+        )
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Aptamer service unavailable: {str(e)}"
         )
